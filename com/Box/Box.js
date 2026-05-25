@@ -4,7 +4,7 @@ import { B, newEl } from "x/dom.js";
 export default () => {
   const dialog = newEl("dialog");
 
-  dialog.className = "uBox";
+  dialog.className = "Box";
 
   On(dialog, {
     close: () => B.removeChild(dialog),

@@ -42,7 +42,7 @@ section
   @import '~/com/Box/Box.styl'
 
   //给 Demo 弹窗应用 .Lg 样式
-  dialog.uBox form.Lg
+  dialog.Box form.Lg
     border-radius 16px
     padding 24px
     display flex
