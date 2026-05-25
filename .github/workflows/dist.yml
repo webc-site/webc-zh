@@ -1,0 +1,46 @@
+name: Dist and Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "com/**"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: 环境 Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 环境 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: 发布与推送
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          bun install
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          ./sh/dist.sh
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin HEAD:main --tags
+          git push origin HEAD:main
