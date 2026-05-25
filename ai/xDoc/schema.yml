@@ -1,0 +1,68 @@
+# 无导出时的 Schema 模板
+no_exports:
+  type: object
+  properties:
+    title:
+      type: string
+      description: 模块的总体用途（一级标题，简练，不要包含文件名，如：页面跳转拦截）
+    description:
+      type: string
+      description: 模块的总体详细描述（由于该文件没有导出任何函数，请在此处写明其具体执行逻辑和主要功能，非空）
+  required:
+    - title
+    - description
+
+# 有导出时的基础 Schema 模板
+has_exports:
+  type: object
+  properties:
+    title:
+      type: string
+      description: 整个模块的主要用途（用作 Markdown 第一行的一级标题，简练，如：绑定与解绑事件监听，不要带 JS 文件名）
+    exports:
+      type: object
+      properties: {} # 动态生成
+      required: [] # 动态生成
+  required:
+    - title
+    - exports
+
+# 导出项为函数时的基准配置
+fn_base:
+  type: object
+  properties:
+    description:
+      type: string
+    params:
+      type: object
+      additionalProperties:
+        type: string
+      description: 函数参数的键值对。键为参数名，值为参数用途。
+    return:
+      type: string
+      description: 函数返回值的描述。如果没有返回值，请绝对不要输出该字段（完全省略此属性）。
+    exception:
+      type: string
+      description: 如果该函数或变量访问会抛出异常，请在此描述。如果绝对不抛出异常，请绝对不要输出该字段。
+  required:
+    - description
+
+# 导出项为变量时的基准配置
+var_base:
+  type: object
+  properties:
+    description:
+      type: string
+    params:
+      type: object
+      additionalProperties:
+        type: string
+      description: 变量可能具有的参数键值对。键为参数名，值为参数用途。
+    return:
+      type: string
+      description: 该变量的类型及用途。如果没有，请绝对不要输出该字段。
+    exception:
+      type: string
+      description: 如果该函数或变量访问会抛出异常，请在此描述。如果绝对不抛出异常，请绝对不要输出该字段。
+  required:
+    - description

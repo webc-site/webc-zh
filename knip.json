@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "ai/lib/gci.js",
+    "ai/**.js",
+    "ai/test/**/*.js",
+    "com.js",
+    "page/entry/*.{js,svelte}",
+    "page/Index/Com.svelte",
+    "sh/demo.js",
+    "sh/dist/*.js",
+    "sh/env.js",
+    "sh/init.js",
+    "sh/hook/*.js",
+    "vite/com/dev.js",
+    "vite/dist/*.js",
+    "vite/pug/*.js",
+    ".agents/skills/*.js",
+    "gitPage.js"
+  ],
+  "project": ["**/*.{js,svelte}"],
+  "paths": {
+    "x/*": ["./x/*"]
+  },
+  "ignore": ["cli/**", "x/**", ".cache/**", "com/*/demo/**", "oxlint.config.js", "sh/example/**"],
+  "ignoreBinaries": ["sh/hook/svg.js", "sh/hook/svelte.js", "sh/hook/styl.js", "sh/hook/js.js"],
+  "ignoreDependencies": ["oxfmt", "oxlint"]
+}
