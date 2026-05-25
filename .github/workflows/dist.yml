@@ -1,4 +1,4 @@
-name: Dist and Publish
+name: 构建与发布
 
 on:
   push:
