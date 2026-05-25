@@ -1,0 +1,17 @@
+extends ./index.pug
+
+block head
+  script(type="importmap").
+    {"imports": {"x/": "./x/"}}
+  if css_link_href
+    link(rel="stylesheet" href=css_link_href)
+  style.
+    !{demo_css}
+
+block body
+  | !{ demo_htm }
+  if js_script_href
+    script(type="module" src=js_script_href)
+  script(type="module").
+    !{ demo_js };
+    import "x/rmWait.js";
