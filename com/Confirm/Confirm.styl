@@ -1,0 +1,70 @@
+.uConfirm
+  border-radius 16px
+  box-sizing border-box
+  display flex
+  flex-direction column
+  gap 16px
+  max-width 480px
+  min-width 300px
+  padding 24px
+
+  > b:first-child
+    align-items flex-start
+    color #1d1d1f
+    display flex
+    flex-direction column
+    font-size 15px
+    gap 12px
+
+    h3
+      font-size 18px
+      font-weight 600
+      margin 0
+
+    p
+      color #666
+      font-size 14px
+      margin 0
+
+  > b:first-child.Wait + b:last-child
+    button:last-child
+      display none
+
+  > b:last-child
+    display flex
+    gap 16px
+    margin 12px 0 0
+    width 100%
+
+    button
+      flex 1
+
+      i
+        background-color currentColor
+        display inline-block
+        height 16px
+        margin-right 6px
+        mask-position 50% 50%
+        mask-repeat no-repeat
+        mask-size contain
+        width 16px
+
+      &:first-child i
+        mask-image var(--confirmXSvg)
+
+      &:last-child
+        background linear-gradient(180deg, #f0fdf4, #dcfce7)
+        box-shadow inset 0 1px 1px #ffffff, inset 0 0 0 1px #bbf7d0, 0 1px 2px #00000005
+        color #15803d
+
+        i
+          mask-image var(--confirmOkSvg)
+
+        &:hover
+          background linear-gradient(180deg, #dcfce7, #bbf7d0)
+          box-shadow inset 0 1px 1px #ffffff, inset 0 0 0 1px #86efac, 0 2px 4px #0000000a
+          color #14532d
+
+        &:active
+          background linear-gradient(180deg, #dcfce7, #bbf7d0)
+          box-shadow inset 0 1px 2px #00000008, inset 0 0 0 1px #86efac

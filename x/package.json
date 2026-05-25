@@ -1,0 +1,22 @@
+{
+  "name": "@3-/x",
+  "version": "0.2.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://webc-zh.pages.dev",
+  "license": "MIT",
+  "author": "i18n.site@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webc-site/webc-zh.git"
+  },
+  "files": [
+    "./*"
+  ],
+  "type": "module",
+  "exports": {
+    "./*": "./*"
+  },
+  "scripts": {},
+  "devDependencies": {}
+}
