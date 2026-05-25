@@ -26,18 +26,18 @@
 #### 使用 jsdelivr
 
 ```html
-<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.26/Scroll.css" rel="stylesheet" />
+<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.27/Scroll.css" rel="stylesheet" />
 <script type="module">
-  import "//cdn.jsdelivr.net/npm/webc.site@0.1.26/Scroll.js";
+  import "//cdn.jsdelivr.net/npm/webc.site@0.1.27/Scroll.js";
 </script>
 ```
 
 #### 使用 npmmirror（中国大陆镜像源）
 
 ```html
-<link href="//registry.npmmirror.com/webc.site/0.1.26/files/Scroll.css" rel="stylesheet" />
+<link href="//registry.npmmirror.com/webc.site/0.1.27/files/Scroll.css" rel="stylesheet" />
 <script type="module">
-  import "//registry.npmmirror.com/webc.site/0.1.26/files/Scroll.js";
+  import "//registry.npmmirror.com/webc.site/0.1.27/files/Scroll.js";
 </script>
 ```
 
@@ -46,7 +46,7 @@
 > 如需重写默认样式，可引用前缀为 `_` 的样式文件（该文件不包含 `var.css` 声明）：
 
 ```html
-<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.26/_Scroll.css" rel="stylesheet" />
+<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.27/_Scroll.css" rel="stylesheet" />
 ```
 
 ### 2. 构建模式
@@ -168,13 +168,13 @@ AI 通过自动化浏览器（如 Antigravity）进行开发与调试时，常�
 ##### 使用 jsdelivr
 
 ```html
-<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.26/reset.css" rel="stylesheet" />
+<link href="//cdn.jsdelivr.net/npm/webc.site@0.1.27/reset.css" rel="stylesheet" />
 ```
 
 ##### 使用 npmmirror（中国大陆镜像源）
 
 ```html
-<link href="//registry.npmmirror.com/webc.site/0.1.26/files/reset.css" rel="stylesheet" />
+<link href="//registry.npmmirror.com/webc.site/0.1.27/files/reset.css" rel="stylesheet" />
 ```
 
 #### 样式逻辑
