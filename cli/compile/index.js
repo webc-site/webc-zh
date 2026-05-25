@@ -1,31 +1,18 @@
 import { existsSync, readdirSync, statSync, mkdirSync } from "node:fs";
-import { join, dirname, extname } from "node:path";
+import { join, dirname, extname, resolve } from "node:path";
 import read from "@3-/read";
-import stylRender from "./stylus.js";
-import { write } from "./util.js";
+import { write, copy, findXDeps } from "./util.js";
 import { LIB, CSS } from "../const/DIR.js";
-import processDir from "./process.js";
+import { rewriteImports, copyAndResolveX } from "./xResolve.js";
 
-const compileStylDir = (styl_dir, output_dir) => {
-  if (!existsSync(styl_dir)) return;
-  readdirSync(styl_dir).forEach((entry) => {
-    const src_path = join(styl_dir, entry),
-      dest_path = join(output_dir, entry),
-      stat = statSync(src_path);
-
-    if (stat.isDirectory()) {
-      compileStylDir(src_path, dest_path);
-    } else {
-      const ext = extname(entry).toLowerCase();
-      if (ext === ".styl") {
-        const content = read(src_path),
-          stylus_css = stylRender(content, src_path),
-          dest_css_path = dest_path.slice(0, -ext.length) + ".css";
-        mkdirSync(dirname(dest_css_path), { recursive: true });
-        write(dest_css_path, stylus_css);
-      }
-    }
-  });
+const parseImports = (content) => {
+  const imports = [];
+  const regex = /import\s+['"](\.\.?\/[^'"]+)['"]/g;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    imports.push(match[1]);
+  }
+  return imports;
 };
 
 export default (dir, canonical_name) => {
@@ -35,29 +22,61 @@ export default (dir, canonical_name) => {
       pkg.name && pkg.version
         ? "// " + pkg.name + "@" + pkg.version + (pkg.homepage ? " " + pkg.homepage : "") + "\n\n"
         : "",
-    imports = [],
     processed_x = new Set(),
-    comp_src_dir = join(dir, canonical_name),
+    processed_files = new Set(),
     package_styl_dir = join(dir, "styl");
 
-  processDir(
-    comp_src_dir,
-    join(LIB, canonical_name),
-    dir,
-    imports,
-    processed_x,
-    canonical_name,
-    comp_src_dir,
-  );
+  const entry_js_name = canonical_name + ".js",
+    src_entry = join(dir, entry_js_name),
+    dest_entry = join(LIB, entry_js_name);
 
-  if (existsSync(package_styl_dir)) {
-    compileStylDir(package_styl_dir, CSS);
+  const copyAndProcess = (src_path, dest_path) => {
+    if (processed_files.has(src_path)) return;
+    processed_files.add(src_path);
+
+    if (!existsSync(src_path)) return;
+
+    const ext = extname(src_path).toLowerCase();
+    mkdirSync(dirname(dest_path), { recursive: true });
+
+    if (ext === ".js") {
+      const content = read(src_path);
+      findXDeps(content).forEach((dep) => copyAndResolveX(dep, dir, processed_x));
+      write(dest_path, rewriteImports(content, dest_path));
+
+      const rel_imports = parseImports(content);
+      for (const rel_import of rel_imports) {
+        const import_src = resolve(dirname(src_path), rel_import),
+          import_dest = resolve(dirname(dest_path), rel_import);
+        copyAndProcess(import_src, import_dest);
+      }
+    } else {
+      copy(src_path, dest_path);
+    }
+  };
+
+  if (existsSync(src_entry)) {
+    const entry_content = read(src_entry);
+    mkdirSync(dirname(dest_entry), { recursive: true });
+    write(dest_entry, header + entry_content);
+    processed_files.add(src_entry);
+
+    const rel_imports = parseImports(entry_content);
+    for (const rel_import of rel_imports) {
+      const import_src = resolve(dir, rel_import),
+        import_dest = resolve(LIB, rel_import);
+      copyAndProcess(import_src, import_dest);
+    }
   }
 
-  const filterSort = (ext) => imports.filter((x) => x.endsWith(ext)).sort(),
-    import_content =
-      header +
-      [...filterSort(".js"), ...filterSort(".css")].map((x) => 'import "' + x + '";').join("\n") +
-      "\n";
-  write(join(LIB, canonical_name + ".js"), import_content);
+  if (existsSync(package_styl_dir)) {
+    readdirSync(package_styl_dir).forEach((entry) => {
+      const src_path = join(package_styl_dir, entry),
+        dest_path = join(CSS, entry);
+      if (entry.endsWith(".css")) {
+        mkdirSync(dirname(dest_path), { recursive: true });
+        copy(src_path, dest_path);
+      }
+    });
+  }
 };
