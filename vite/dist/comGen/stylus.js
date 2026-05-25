@@ -1,0 +1,33 @@
+import { readFileSync, existsSync } from "node:fs";
+import { join, dirname, resolve } from "node:path";
+import stylRender from "~/vite/stylus.js";
+import { transform } from "lightningcss";
+import write from "@3-/write";
+import { save, URL_REGEX } from "~/cli/compile/svg.js";
+
+export default (styl_path, dest_path, map_dest_path, import_var, com_name) => {
+  let content = readFileSync(styl_path, "utf-8");
+  const com_dir = dirname(styl_path);
+  if (import_var && existsSync(join(com_dir, "var.styl"))) {
+    content = '@import "./var.styl"\n' + content;
+  }
+  const raw_css = stylRender(content, styl_path),
+    rewritten_css = raw_css.replace(URL_REGEX, (match, rel_path) => {
+      const [path_part, hash_part = ""] = rel_path.split(/(?=[#?])/),
+        svg_path = resolve(com_dir, path_part);
+      if (existsSync(svg_path)) {
+        return 'url("' + save(com_name, svg_path, path_part) + hash_part + '")';
+      }
+      console.warn("⚠️ SVG file not found: " + svg_path);
+      return match;
+    }),
+    { code, map } = transform({
+      filename: resolve(dest_path),
+      code: Buffer.from(rewritten_css),
+      minify: true,
+      sourceMap: true,
+    }),
+    css_code = code.toString().replace(/\/\*#\s*sourceMappingURL=.+?\*\//g, "");
+  write(dest_path, css_code);
+  write(map_dest_path, map.toString());
+};

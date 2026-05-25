@@ -1,0 +1,32 @@
+.wait, .ing
+  position relative
+
+  &:before
+    animation-duration 1s
+    animation-name fadeIn
+    background var(--waitSvg) 50% 50% / 64px no-repeat
+    bottom 0
+    content ''
+    cursor wait
+    left 0
+    position absolute
+    right 0
+    top 0
+    z-index 999
+
+.ing
+  &:before
+    background-color #ffffff99
+
+.wait
+  align-self center
+  display flex
+  height 64px
+  width 64px
+
+@keyframes fadeIn
+  from
+    opacity 0
+
+  to
+    opacity 1

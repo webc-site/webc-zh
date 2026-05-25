@@ -1,0 +1,30 @@
+.Lg
+  position relative
+  z-index 1
+
+  &::before
+    backdrop-filter blur(30px) saturate(150%) var(--glassSvg)
+    background linear-gradient(180deg, #f5f5f54d, #f5f5f580)
+    border-radius inherit
+    content ''
+    filter var(--highlightSvg)
+    inset 0
+    position absolute
+    transition background 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    z-index -1
+
+  &::after
+    background-clip border-box
+    background-image linear-gradient(180deg, #00000026, #0000000f)
+    background-origin border-box
+    border 1px solid transparent
+    border-radius inherit
+    border-width 0.5px
+    content ''
+    inset 0
+    mask-clip content-box, border-box
+    mask-composite exclude
+    mask-image linear-gradient(#fff 0 0), linear-gradient(#fff 0 0)
+    pointer-events none
+    position absolute
+    z-index -1
