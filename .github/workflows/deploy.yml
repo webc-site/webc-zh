@@ -19,9 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          token: ${{ secrets.GH_TOKEN }}
           persist-credentials: true
           fetch-depth: 0
 
@@ -36,10 +35,7 @@ jobs:
       - name: 构建
         run: |
           NODE_ENV=production ./build.sh
-          if [ -f dist/Index.html ]; then
-            cp dist/Index.html dist/index.html
-            cp dist/Index.html dist/404.html
-          fi
+          cp dist/index.html dist/404.html
           if [ -f dist/.gitignore ]; then
             rm dist/.gitignore
           fi
