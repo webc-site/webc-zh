@@ -1,0 +1,32 @@
+{
+  "name": "webc.add",
+  "version": "0.1.6",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://webc-zh.pages.dev",
+  "license": "MIT",
+  "author": "i18n.site@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webc-site/webc-zh.git"
+  },
+  "bin": {
+    "webc-i": "./cli.js"
+  },
+  "files": [
+    "./*"
+  ],
+  "type": "module",
+  "exports": {
+    "./*": "./*"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@3-/log": "^0.1.9",
+    "@3-/read": "^0.1.4",
+    "stylus": "^0.64.0",
+    "tar": "^7.5.15",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {}
+}
