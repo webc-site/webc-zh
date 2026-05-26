@@ -10,8 +10,8 @@ let lang_idx = $state(1);
 onMount(() => {
   const btn = I18n(NAME.forEach.bind(NAME));
   container.append(btn);
-  return onLang((idx) => {
-    lang_idx = idx;
+  return onLang((val) => {
+    lang_idx = val?.[1] ?? 1;
   });
 });
 </script>

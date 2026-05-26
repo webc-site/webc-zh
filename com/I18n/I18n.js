@@ -19,7 +19,7 @@ export default (genLangLi) => {
   const open = () => {
     const dialog = XBox(),
       [main, title, btn_container] = ["main", "h6", "b"].map(newEl),
-      cur_lang = langGet() ?? 0;
+      cur_lang = langGet()?.[1] ?? 0;
 
     main.className = "I18n" + LG;
     title.innerText = "请选择页面语言";
@@ -31,7 +31,7 @@ export default (genLangLi) => {
       button.className = cur_lang == id ? BTN_LG + " Main" : BTN_LG;
       On(button, {
         click: () => {
-          langSet(id);
+          langSet([name, id]);
           dialog.close();
         },
       });
