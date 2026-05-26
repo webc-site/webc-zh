@@ -13,9 +13,11 @@ const main = async () => {
     }
 
     await $`git checkout main`;
+    await $`git pull`;
     await $`git merge ${branch_name}`;
     await $`git push origin main`;
     await $`git checkout ${branch_name}`;
+    await $`git merge main`;
   }
 };
 
