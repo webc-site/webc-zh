@@ -4,11 +4,13 @@ import { tmpdir } from "node:os";
 import { x } from "tar";
 import { CACHE } from "./const/DIR.js";
 
+const ERR_TARBALL = "Failed to download tarball";
+
 export const cache = (version) => join(CACHE, version),
   download = async (url, dir) => {
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error("Failed to download tarball: " + res.statusText);
+      throw new Error(ERR_TARBALL + ": " + res.statusText);
     }
     const bin = new Uint8Array(await res.arrayBuffer()),
       tmp = tmpdir(),

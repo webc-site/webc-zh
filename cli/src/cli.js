@@ -59,7 +59,7 @@ const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../p
       }
     }
   },
-  build = async (dir, name) => {
+  build = async (dir, name, root) => {
     const index_js = join(dir, "index.js");
     if (!existsSync(index_js)) {
       exit("index.js not found in package");
@@ -76,6 +76,14 @@ const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../p
       exit("Component " + name + " does not exist");
     }
 
+    const com_pkg_path = join(dir, canonical_name, "package.json");
+    if (existsSync(com_pkg_path)) {
+      const { dependencies } = JSON.parse(read(com_pkg_path));
+      if (dependencies) {
+        await pkgMerge(dependencies, root);
+      }
+    }
+
     compile(dir, canonical_name);
   },
   main = async () => {
@@ -83,12 +91,12 @@ const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../p
       root = dirname(pkgFind(process.cwd())),
       dir = await prepare();
     await merge(dir, root);
-    await build(dir, name);
+    await build(dir, name, root);
   };
 
 try {
   await main();
-} catch ({ message }) {
-  console.error(message);
+} catch (err) {
+  console.error(err);
   process.exit(1);
 }
