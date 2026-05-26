@@ -1,0 +1,50 @@
+name: 部署至 GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# 允许一次并发部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: 环境
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 依赖
+        run: bun install
+
+      - name: 构建
+        run: |
+          NODE_ENV=production ./build.sh
+          cp dist/index.html dist/404.html
+          if [ -f dist/.gitignore ]; then
+            rm dist/.gitignore
+          fi
+
+      - name: 部署
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository-name: webc-zh/webc-zh.pages.dev
+          branch: main
+          folder: dist
+          single-commit: true
