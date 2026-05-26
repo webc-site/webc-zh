@@ -1,21 +1,19 @@
-let NAME_ID;
+let ID;
 
 const HOOK = new Set();
 
-export const langGet = () => NAME_ID,
+export const LANG_LI = [],
+  langGet = () => ID,
   onLang = (func) => {
-    if (NAME_ID !== undefined) func(NAME_ID);
+    if (ID !== undefined) func(ID);
     HOOK.add(func);
     return () => {
       HOOK.delete(func);
     };
   },
-  langSet = (
-    // [lang_name, lang_id]
-    name_id,
-  ) => {
-    if (name_id[1] !== NAME_ID?.[1]) {
-      NAME_ID = name_id;
+  langSet = (id) => {
+    if (id !== ID) {
+      ID = id;
     }
-    for (const f of HOOK) f(name_id);
+    for (const f of HOOK) f(id);
   };
