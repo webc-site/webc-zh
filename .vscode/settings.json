@@ -1,0 +1,12 @@
+{
+  "python-envs.pythonProjects": [
+    {
+      "path": ".tmp",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
+    }
+  ],
+  "[markdown]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features"
+  }
+}
