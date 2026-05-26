@@ -88,10 +88,12 @@ section
   .wrap
     flex 1
     display flex
+    gap var(--gap)
     overflow hidden
 
     @media $narrow
       flex-direction column
+      gap 0
 
 @media $mobile
   padding 0
