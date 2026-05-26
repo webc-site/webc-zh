@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, mkdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { copy } from "./util.js";
+import copyDir from "./copyDir.js";
 
 export default (src, dest) => {
   if (!existsSync(src)) return;
