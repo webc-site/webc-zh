@@ -2,9 +2,11 @@
 import demos from "~/gen/com/demo/index.js";
 import coms from "~/gen/com/index.js";
 import CDN_PKG from "~/conf/web/npm/CDN_PKG.js";
+import VER from "~/conf/web/ver/webc.site.js";
+import cdnMap from "~/conf/web/cdn.npm.js";
 import Menu from "~/page/Index/Preview/Menu.svelte";
 
-let { name, urls_text } = $props(),
+let { name, urls_text, cdn = "jsdelivr" } = $props(),
   open = $state(false),
   container_el = $state();
 
@@ -26,10 +28,11 @@ const HTTPS = "https://",
     const [_, [htm, js, css]] = match,
       com = coms.find(([n]) => n == name),
       desc = com ? com[1] : "",
-      html_field = urls_text + "\n" + htm;
+      html_field = urls_text + "\n" + htm,
+      cdn_url = cdnMap[cdn](CDN_PKG, VER);
     return {
       html: html_field,
-      js: js,
+      js: js.replaceAll('"x.js"', `"${cdn_url}/x.js"`),
       css: css,
       title: name + " - " + CDN_PKG,
       description: desc,

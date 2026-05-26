@@ -85,7 +85,7 @@ const urls_text = $derived.by(() => {
           runner_keys={ CLI_RUNNERS }
           onChange!={ onChange }
         )
-      Fiddle(name={ name } urls_text={ urls_text })
+      Fiddle(name={ name } urls_text={ urls_text } cdn={ active_cdn })
     Code(text={ mode == MODE_DIRECT ? urls_text : cli_text })
 </template>
 
