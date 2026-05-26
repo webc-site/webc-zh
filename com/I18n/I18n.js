@@ -1,12 +1,16 @@
 import XBox from "../XBox/XBox.js";
 import { On } from "x/On.js";
 import { newEl } from "x/dom.js";
+import { langGet, langSet } from "x/i18n.js";
 import NAME from "@3-/lang/NAME.js";
 
 const LG = " Lg",
   BTN_LG = "Btn" + LG;
 
-export default (langGet, langSet) => {
+export default () => {
+  if (langGet() === undefined) {
+    langSet(1);
+  }
   const [btn, icon] = ["button", "i"].map(newEl);
 
   btn.className = "BtnC lang" + LG;

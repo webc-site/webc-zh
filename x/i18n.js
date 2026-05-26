@@ -1,5 +1,6 @@
-const HOOK = new Set();
 let LANG;
+
+const HOOK = new Set();
 
 export const langGet = () => LANG,
   onLang = (func) => {
