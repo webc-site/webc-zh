@@ -7,18 +7,10 @@ import { dirname, join } from "node:path";
 import { load } from "js-yaml";
 import CODE from "@3-/lang/CODE.js";
 import alitran from "@3-/alitran";
+import codeIdx from "~/sh/tran/codeIdx.js";
+import tran from "~/sh/tran/tran.js";
 
 const ROOT = dirname(import.meta.dirname),
-  codeIdx = (name) => {
-    const idx = CODE.indexOf(name);
-    if (idx === -1) {
-      console.warn("⚠️ " + name + " 不存在");
-    }
-    return idx;
-  },
-  tran = async (ali_tran, from, to_li) => {
-    console.log(from, to_li);
-  },
   main = async () => {
     const token_path = join(homedir(), ".config/webc.site/ALI_TOKEN.js");
     if (!existsSync(token_path)) {
@@ -33,7 +25,7 @@ const ROOT = dirname(import.meta.dirname),
       from_idx = codeIdx(from),
       to_li = to_arr.map(codeIdx).filter((idx) => idx !== -1);
 
-    await tran(ali_tran, from_idx, to_li);
+    await tran(ROOT, ali_tran, from_idx, to_li);
   };
 
 export default main;

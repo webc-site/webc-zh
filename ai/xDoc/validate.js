@@ -1,4 +1,5 @@
 import Ajv from "ajv";
+import isStr from "@3-/is_str";
 
 const ajv = new Ajv(),
   ok = (v) =>
@@ -9,7 +10,7 @@ const ajv = new Ajv(),
 
 export const clean = (obj) => {
     if (typeof obj !== "object" || obj === null) {
-      if (typeof obj === "string") {
+      if (isStr(obj)) {
         const trimmed = obj.trim();
         return trimmed === "" ? undefined : trimmed;
       }
