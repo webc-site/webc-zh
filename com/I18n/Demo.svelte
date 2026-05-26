@@ -1,17 +1,19 @@
 <script>
 import { onMount } from "svelte";
 import I18n from "./I18n.js";
-import { onLang } from "x/i18n.js";
+import { onLang, LANG_LI } from "x/i18n.js";
 import NAME from "@3-/lang/NAME.js";
+
+LANG_LI.splice(0, LANG_LI.length, ...NAME.map((name, id) => [name, id]));
 
 let container = null;
 let lang_idx = $state(1);
 
 onMount(() => {
-  const btn = I18n(NAME.forEach.bind(NAME));
+  const btn = I18n();
   container.append(btn);
-  return onLang((val) => {
-    lang_idx = val?.[1] ?? 1;
+  return onLang((id) => {
+    lang_idx = id ?? 1;
   });
 });
 </script>
