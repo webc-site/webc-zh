@@ -5,13 +5,15 @@ import write from "@3-/write";
 import ROOT_PATH from "~/vite/const/ROOT.js";
 import versionInit from "~/vite/dist/version.js";
 
+const README_MD = "README.md";
+
 export const ROOT = ROOT_PATH,
   initDir = (dir) => {
     rmSync(dir, { recursive: true, force: true });
     mkdirSync(dir, { recursive: true });
-    const readme = join(ROOT, "README.md");
+    const readme = join(ROOT, README_MD);
     if (existsSync(readme)) {
-      cpSync(readme, join(dir, "README.md"));
+      cpSync(readme, join(dir, README_MD));
     }
   },
   writePkg = (name, dist_dir, version) => {
@@ -20,6 +22,9 @@ export const ROOT = ROOT_PATH,
       const pkg = JSON.parse(read(pkg_path));
       pkg.name = name;
       pkg.version = version;
+      delete pkg.bin;
+      delete pkg.files;
+      delete pkg.dependencies;
       write(join(dist_dir, "package.json"), JSON.stringify(pkg));
     }
   },
