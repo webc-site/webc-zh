@@ -4,18 +4,18 @@ const container = document.getElementById("btn-container"),
   text = document.getElementById("lang-text");
 
 if (container && text) {
-  const lang_names = {
-    0: "English",
-    1: "中文",
-    2: "Deutsch",
-    3: "日本語",
-    4: "Français",
-  };
-
-  const btn = I18n();
+  const lang_names = [
+      ["English", 0],
+      ["中文", 1],
+      ["Deutsch", 2],
+      ["日本語", 3],
+      ["Français", 4],
+    ],
+    btn = i18n(lang_names.map.bind(lang_names));
 
   onLang((idx) => {
-    text.innerText = (lang_names[idx] || "语言 " + idx) + " (索引: " + idx + ")";
+    const item = lang_names.find(([, id]) => id == idx);
+    text.innerText = (item ? item[0] : "语言 " + idx) + " (索引: " + idx + ")";
   });
 
   container.appendChild(btn);

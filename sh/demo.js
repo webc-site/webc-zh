@@ -181,6 +181,7 @@ const inline = (cdn_dir, css_path) => {
       demo_css = existsSync(css_path) ? read(css_path) : "";
 
     let demo_js = existsSync(js_path) ? read(js_path) : "";
+    demo_js = demo_js.replace(/['"]x\/[^'"]+?\.js['"]/g, '"./x.js"');
     if (has_js) {
       const js_fp = join(absolute_path, name + ".js"),
         has_default = existsSync(js_fp) && read(js_fp).includes("export default");

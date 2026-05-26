@@ -3,22 +3,26 @@
 ## 功能
 
 - **语言切换**：点击按钮弹出语言选择浮层
-- **多语言集成**：内置支持 [@3-/lang](https://www.npmjs.com/package/@3-/lang) 全部语言列表
 - **状态高亮**：根据当前语言自动高亮显示选中状态
 
 ## API
 
-### `I18n()`
+### `I18n(map)`
 
+- **参数**：
+  - `map` (`Function`): 映射函数，执行后应传入回调函数 `([name, id]) =>` 生成按钮元素。
+    > [!NOTE]
+    > 可配合 [@3-/lang](https://www.npmjs.com/package/@3-/lang) 的 `NAME.js` 使用，传入 `NAME.map.bind(NAME)`。
 - **返回值**：`HTMLButtonElement` 语言选择按钮 DOM 节点。
 
 ## 使用
 
 ```javascript
 import I18n from 'lib/I18n.js';
+import NAME from '@3-/lang/NAME.js';
 import { onLang } from 'x/i18n.js';
 
-const btn = I18n();
+const btn = I18n(NAME.map.bind(NAME));
 
 onLang((idx) => {
   console.log('Language changed to: ' + idx);
