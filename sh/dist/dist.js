@@ -20,6 +20,9 @@ export const ROOT = ROOT_PATH,
       const pkg = JSON.parse(read(pkg_path));
       pkg.name = name;
       pkg.version = version;
+      delete pkg.bin;
+      delete pkg.files;
+      delete pkg.dependencies;
       write(join(dist_dir, "package.json"), JSON.stringify(pkg));
     }
   },
