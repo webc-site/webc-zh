@@ -20,7 +20,7 @@
     "gitPage.js",
     "srv/init.js",
     "srv/docker/*.js",
-    "sh/hook/*.js"
+    "sh/**/*.js"
   ],
   "project": ["**/*.{js,svelte}"],
   "paths": {
