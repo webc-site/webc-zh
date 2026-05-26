@@ -88,7 +88,6 @@ section
   .wrap
     flex 1
     display flex
-    gap var(--gap)
     overflow hidden
 
     @media $narrow
