@@ -91,6 +91,9 @@ section
     gap var(--gap)
     overflow hidden
 
+    @media $narrow
+      flex-direction column
+
 @media $mobile
   padding 0
 </style>
