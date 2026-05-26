@@ -36,7 +36,14 @@ describe("cli compile and package merge", () => {
   it("should compile confirm and process svg/css correctly", async () => {
     compile(dir, "Confirm");
 
-    exist(LIB, ["Confirm.js", ["Confirm", "var.css"]]);
+    exist(LIB, [
+      "Confirm.js",
+      ["Confirm", "var.css"],
+      ["Confirm", "ver.yml"],
+      ["Box", "ver.yml"],
+      ["Btn", "ver.yml"],
+      ["Wait", "ver.yml"],
+    ]);
     exist(join(PUBLIC, "com"), [
       ["Confirm", "svg", "ok.svg"],
       ["Confirm", "svg", "x.svg"],
@@ -46,6 +53,9 @@ describe("cli compile and package merge", () => {
     ["ok", "x"].forEach((name) =>
       expect(varCss).toContain('url("/com/Confirm/svg/' + name + '.svg")'),
     );
+
+    expect(read(join(LIB, "Confirm", "ver.yml"))).toContain("npm: webc.com@");
+    expect(read(join(LIB, "Box", "ver.yml"))).toContain("npm: webc.com@");
   });
 
   it("should compile I18n and copy all files including svg and package.json", async () => {
@@ -56,6 +66,9 @@ describe("cli compile and package merge", () => {
       ["I18n", "var.css"],
       ["I18n", "package.json"],
       ["I18n", "svg", "i18n.svg"],
+      ["I18n", "ver.yml"],
+      ["XBox", "ver.yml"],
+      ["Btn", "ver.yml"],
     ]);
   });
 

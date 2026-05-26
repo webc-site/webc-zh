@@ -13,8 +13,9 @@ import compile from "./compile.js";
 import GREEN from "@3-/log/GREEN.js";
 import pkgMerge from "./pkgMerge.js";
 import pkgFind from "./pkgFind.js";
+import { PKG_JSON } from "./const.js";
 
-const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../package.json"))),
+const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../", PKG_JSON))),
   exit = (msg) => {
     console.error(msg);
     process.exit(1);
@@ -51,7 +52,7 @@ const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../p
     return dir;
   },
   merge = async (dir, root) => {
-    const pkg_path = join(dir, "package.json");
+    const pkg_path = join(dir, PKG_JSON);
     if (existsSync(pkg_path)) {
       const { dependencies } = JSON.parse(read(pkg_path));
       if (dependencies) {
@@ -76,15 +77,14 @@ const { version: CLI_VERSION } = JSON.parse(read(join(import.meta.dirname, "../p
       exit("Component " + name + " does not exist");
     }
 
-    const com_pkg_path = join(dir, canonical_name, "package.json");
-    if (existsSync(com_pkg_path)) {
-      const { dependencies } = JSON.parse(read(com_pkg_path));
-      if (dependencies) {
-        await pkgMerge(dependencies, root);
+    await merge(join(dir, canonical_name), root);
+
+    const dep_components = compile(dir, canonical_name);
+    for (const dep_name of dep_components) {
+      if (dep_name !== canonical_name) {
+        await merge(join(dir, dep_name), root);
       }
     }
-
-    compile(dir, canonical_name);
   },
   main = async () => {
     const name = parse(),
