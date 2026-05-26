@@ -7,12 +7,12 @@
 
 ## API
 
-### `I18n(map)`
+### `I18n(genLangLi)`
 
 - **参数**：
-  - `map` (`Function`): 映射函数，执行后应传入回调函数 `([name, id]) =>` 生成按钮元素。
+  - `genLangLi` (`Function`): 遍历函数，执行后应传入回调函数 `([name, id]) =>` 生成按钮元素。
     > [!NOTE]
-    > 可配合 [@3-/lang](https://www.npmjs.com/package/@3-/lang) 的 `NAME.js` 使用，传入 `NAME.map.bind(NAME)`。
+    > 可配合 [@3-/lang](https://www.npmjs.com/package/@3-/lang) 的 `NAME.js` 使用，传入 `NAME.forEach.bind(NAME)`。
 - **返回值**：`HTMLButtonElement` 语言选择按钮 DOM 节点。
 
 ## 使用
@@ -22,7 +22,7 @@ import I18n from 'lib/I18n.js';
 import NAME from '@3-/lang/NAME.js';
 import { onLang } from 'x/i18n.js';
 
-const btn = I18n(NAME.map.bind(NAME));
+const btn = I18n(NAME.forEach.bind(NAME));
 
 onLang((idx) => {
   console.log('Language changed to: ' + idx);

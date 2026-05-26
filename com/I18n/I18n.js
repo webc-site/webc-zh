@@ -6,7 +6,7 @@ import { langGet, langSet } from "x/i18n.js";
 const LG = " Lg",
   BTN_LG = "Btn" + LG;
 
-export default (NAME) => {
+export default (genLangLi) => {
   const [btn, icon] = ["button", "i"].map(newEl);
 
   btn.className = "BtnC lang" + LG;
@@ -24,7 +24,7 @@ export default (NAME) => {
     main.className = "I18n" + LG;
     title.innerText = "请选择页面语言";
 
-    const buttons = NAME((...args) => {
+    genLangLi((...args) => {
       const [name, id] = Array.isArray(args[0]) ? args[0] : args,
         button = newEl("button");
       button.innerText = name;
@@ -35,10 +35,8 @@ export default (NAME) => {
           dialog.close();
         },
       });
-      return button;
+      btn_container.append(button);
     });
-
-    btn_container.append(...buttons);
     main.append(title, btn_container);
     dialog.append(main);
   };

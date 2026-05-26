@@ -11,7 +11,7 @@ if (container && text) {
       ["日本語", 3],
       ["Français", 4],
     ],
-    btn = i18n(lang_names.map.bind(lang_names));
+    btn = i18n(lang_names.forEach.bind(lang_names));
 
   onLang((idx) => {
     const item = lang_names.find(([, id]) => id == idx);
