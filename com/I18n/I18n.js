@@ -1,12 +1,12 @@
 import XBox from "../XBox/XBox.js";
 import { On } from "x/On.js";
 import { newEl } from "x/dom.js";
-import NAME from "@3-/lang/NAME.js";
+import { langGet, langSet } from "x/i18n.js";
 
 const LG = " Lg",
   BTN_LG = "Btn" + LG;
 
-export default (langGet, langSet) => {
+export default (genLangLi) => {
   const [btn, icon] = ["button", "i"].map(newEl);
 
   btn.className = "BtnC lang" + LG;
@@ -19,29 +19,30 @@ export default (langGet, langSet) => {
   const open = () => {
     const dialog = XBox(),
       [main, title, btn_container] = ["main", "h6", "b"].map(newEl),
-      cur_lang = langGet();
+      cur_lang = langGet() ?? 0;
 
     main.className = "I18n" + LG;
     title.innerText = "请选择页面语言";
 
-    NAME.forEach((name, i) => {
-      const button = newEl("button");
+    genLangLi((...args) => {
+      const [name, id] = Array.isArray(args[0]) ? args[0] : args,
+        button = newEl("button");
       button.innerText = name;
-      button.className = cur_lang == i ? BTN_LG + " Main" : BTN_LG;
+      button.className = cur_lang == id ? BTN_LG + " Main" : BTN_LG;
       On(button, {
         click: () => {
-          langSet(i);
+          langSet(id);
           dialog.close();
         },
       });
       btn_container.append(button);
     });
-
     main.append(title, btn_container);
     dialog.append(main);
   };
 
   const onKeydown = (e) => {
+    // 13: Enter, 32: Space
     if ([13, 32].includes(e.keyCode)) {
       e.preventDefault();
       open();
