@@ -10,7 +10,7 @@ import ROOT from "~/vite/const/ROOT.js";
 const { name, ver } = yargs(hideBin(process.argv)).argv,
   main = () => {
     if (!name || !ver) return;
-    const dir = join(ROOT, "conf", "ver");
+    const dir = join(ROOT, "conf/web/ver");
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
     }

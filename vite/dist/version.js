@@ -15,32 +15,28 @@ const parseVer = async (file_path) => {
   };
 
 export default async (name, caller_filename) => {
-  const ver_dir = join(ROOT, "conf", "ver"),
+  const ver_dir = join(ROOT, "conf/web/ver"),
     ver_path = join(ver_dir, name + ".js"),
     version = (await parseVer(ver_path)) || "0.1.0";
 
   if (!existsSync(ver_dir)) {
     mkdirSync(ver_dir, { recursive: true });
   }
-  write(
-    ver_path,
-    "// DON'T EDIT, GEN BY " +
-      relative(ROOT, caller_filename) +
-      '\nexport default "' +
-      version +
-      '";',
-  );
+  const writeVer = (v) => {
+      write(
+        ver_path,
+        "// DON'T EDIT, GEN BY " +
+          relative(ROOT, caller_filename) +
+          '\nexport default "' +
+          v +
+          '";',
+      );
+    },
+    save = () => {
+      writeVer(bumpVersion(version));
+    };
 
-  const save = () => {
-    write(
-      ver_path,
-      "// DON'T EDIT, GEN BY " +
-        relative(ROOT, caller_filename) +
-        '\nexport default "' +
-        bumpVersion(version) +
-        '";',
-    );
-  };
+  writeVer(version);
 
   return [version, save];
 };
