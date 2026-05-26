@@ -1,12 +1,12 @@
 import XBox from "../XBox/XBox.js";
 import { On } from "x/On.js";
 import { newEl } from "x/dom.js";
-import { langGet, langSet } from "x/i18n.js";
+import { langGet, langSet, LANG_LI } from "x/i18n.js";
 
 const LG = " Lg",
   BTN_LG = "Btn" + LG;
 
-export default (genLangLi) => {
+export default () => {
   const [btn, icon] = ["button", "i"].map(newEl);
 
   btn.className = "BtnC lang" + LG;
@@ -19,24 +19,23 @@ export default (genLangLi) => {
   const open = () => {
     const dialog = XBox(),
       [main, title, btn_container] = ["main", "h6", "b"].map(newEl),
-      cur_lang = langGet()?.[1] ?? 0;
+      cur_lang = langGet() ?? 0;
 
     main.className = "I18n" + LG;
     title.innerText = "请选择页面语言";
 
-    genLangLi((...args) => {
-      const [name, id] = Array.isArray(args[0]) ? args[0] : args,
-        button = newEl("button");
+    for (const [name, id] of LANG_LI) {
+      const button = newEl("button");
       button.innerText = name;
       button.className = cur_lang == id ? BTN_LG + " Main" : BTN_LG;
       On(button, {
         click: () => {
-          langSet([name, id]);
+          langSet(id);
           dialog.close();
         },
       });
       btn_container.append(button);
-    });
+    }
     main.append(title, btn_container);
     dialog.append(main);
   };
