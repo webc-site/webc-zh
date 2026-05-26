@@ -12,14 +12,14 @@ let { name, files = [] } = $props();
 
 const MODE_DIRECT = 0,
   MODE_BUILD = 1,
-  CDN_KEYS = Object.keys(cdn),
-  CLI_RUNNERS = ["bunx", "npx", "pnpm dlx", "yarn dlx"],
+  CDN_LI = Object.keys(cdn),
+  RUNNER_LI = ["bunx", "npx", "pnpm dlx", "yarn dlx"],
   IMPORT_MODE = "import_mode",
   CDN = "cdn",
   CLI_RUNNER = "cli_runner";
 
-let active_cdn = $state(CDN_KEYS[0]),
-  active_runner = $state(CLI_RUNNERS[0]),
+let active_cdn = $state(CDN_LI[0]),
+  active_runner = $state(RUNNER_LI[0]),
   mode = $state(MODE_DIRECT);
 
 const onChange = (new_mode, value) => {
@@ -41,12 +41,12 @@ onMount(() => {
   }
 
   const stored_cdn = localStorage.getItem(CDN);
-  if (stored_cdn && CDN_KEYS.includes(stored_cdn)) {
+  if (stored_cdn && CDN_LI.includes(stored_cdn)) {
     active_cdn = stored_cdn;
   }
 
   const stored_runner = localStorage.getItem(CLI_RUNNER);
-  if (stored_runner && CLI_RUNNERS.includes(stored_runner)) {
+  if (stored_runner && RUNNER_LI.includes(stored_runner)) {
     active_runner = stored_runner;
   }
 });
@@ -80,9 +80,9 @@ const urls_text = $derived.by(() => {
         Tab(
           bind:active={ mode }
           bind:cdn={ active_cdn }
-          cdn_keys={ CDN_KEYS }
+          cdn_li={ CDN_LI }
           bind:runner={ active_runner }
-          runner_keys={ CLI_RUNNERS }
+          runner_li={ RUNNER_LI }
           onChange!={ onChange }
         )
       Fiddle(name={ name } urls_text={ urls_text } cdn={ active_cdn })

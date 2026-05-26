@@ -1,23 +1,14 @@
 <script>
-let { options = [], value, align = "left", width = "100%", onSelect } = $props();
-
-const list = $derived(
-  options.map((item) => {
-    if (typeof item == "string") {
-      return { label: item.split(" ")[0], value: item };
-    }
-    return item;
-  }),
-);
+let { li = [], value, align = "left", width = "100%", onSelect } = $props();
 </script>
 
 <template lang="pug">
 nav(class={ align } style="--width:{width}")
-  +each list as item
+  +each li as item
     button(
       type="button"
       class!={ value == item.value ? 'selected' : '' }
-      onclick!={ (e) => onSelect?.(item.value, e) }
+      onclick!={ onSelect?.bind(null, item.value) }
     ) {item.label}
 </template>
 

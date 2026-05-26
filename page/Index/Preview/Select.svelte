@@ -1,7 +1,7 @@
 <script>
 import Menu from "~/page/Index/Preview/Menu.svelte";
 
-let { label, mode, active = $bindable(), value = $bindable(), options = [], onChange } = $props();
+let { label, mode, active = $bindable(), value = $bindable(), li = [], onChange } = $props();
 
 let open = $state(false),
   container_el = $state();
@@ -12,7 +12,7 @@ const is_open = $derived(open && active == mode),
     if (active != mode) {
       active = mode;
       open = true;
-      onChange?.(value);
+      onChange(value);
     } else {
       open = !open;
     }
@@ -21,7 +21,7 @@ const is_open = $derived(open && active == mode),
     e.stopPropagation();
     value = val;
     open = false;
-    onChange?.(val);
+    onChange(val);
   },
   handleWindowClick = (e) => {
     if (open && container_el && !container_el.contains(e.target)) {
@@ -47,7 +47,7 @@ b(bind:this={ container_el })
       i.arrow(class!={ open ? 'open' : '' })
 
   +if is_open
-    Menu(options={ options } value={ value } onSelect!={ selectOption })
+    Menu(li={ li } value={ value } onSelect!={ selectOption })
 </template>
 
 <style lang="stylus">

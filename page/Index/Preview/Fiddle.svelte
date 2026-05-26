@@ -61,8 +61,10 @@ const HTTPS = "https://",
     const fields = demoData();
     if (fields) {
       const action_map = {
-        jsfiddle: () => post(HTTPS + "jsfiddle.net/api/post/library/pure/", fields),
-        codepen: () => post(HTTPS + "codepen.io/pen/define/", { data: JSON.stringify(fields) }),
+        jsfiddle: post.bind(null, HTTPS + "jsfiddle.net/api/post/library/pure/", fields),
+        codepen: post.bind(null, HTTPS + "codepen.io/pen/define/", {
+          data: JSON.stringify(fields),
+        }),
       };
       action_map[type]?.();
     }
@@ -77,7 +79,7 @@ b(bind:this={ container_el })
   button(type="button" onclick!={ toggle } aria-label="在线调试") 在线调试
   +if open
     Menu(
-      options={ [ { label: 'JSFiddle', value: 'jsfiddle' }, { label: 'CodePen', value: 'codepen' }, ] }
+      li={ [ { label: 'JSFiddle', value: 'jsfiddle' }, { label: 'CodePen', value: 'codepen' }, ] }
       align="right"
       width="90px"
       onSelect!={ onSelect }

@@ -4,11 +4,14 @@ import Select from "~/page/Index/Preview/Select.svelte";
 let {
   active = $bindable(),
   cdn = $bindable(),
-  cdn_keys = [],
+  cdn_li = [],
   runner = $bindable(),
-  runner_keys = [],
+  runner_li = [],
   onChange,
 } = $props();
+
+const cdn_opt = $derived(cdn_li.map((key) => ({ label: key, value: key }))),
+  runner_opt = $derived(runner_li.map((item) => ({ label: item.split(" ")[0], value: item })));
 </script>
 
 <template lang="pug">
@@ -18,16 +21,16 @@ nav
     mode={ 0 }
     bind:active={ active }
     bind:value={ cdn }
-    options={ cdn_keys }
-    onChange!={ (val) => onChange?.(0, val) }
+    li={ cdn_opt }
+    onChange!={ onChange.bind(null, 0) }
   )
   Select(
     label="打包构建"
     mode={ 1 }
     bind:active={ active }
     bind:value={ runner }
-    options={ runner_keys }
-    onChange!={ (val) => onChange?.(1, val) }
+    li={ runner_opt }
+    onChange!={ onChange.bind(null, 1) }
   )
 </template>
 
