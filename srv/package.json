@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
+    "@3-/time": "^0.1.19",
     "msgpackr": "^2.0.2"
   },
   "devDependencies": {

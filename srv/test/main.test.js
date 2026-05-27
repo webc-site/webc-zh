@@ -1,54 +1,57 @@
 import { expect, test, beforeAll, afterAll } from "vitest";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import isPortReachable from "is-port-reachable";
 import { pack } from "msgpackr";
 import R from "../src/conn/R.js";
-import { R_JS, R_HOST } from "../src/R.js";
+import { R_JS, R_HOST, R_SRV_ID_INCR } from "../src/R.js";
 import SRV from "../sh/const/SRV.js";
-import { HOST, PORT } from "../conf/workerd/CONF.js";
+import { PORT } from "../conf/workerd/CONF.js";
 import COMPATIBILITY_DATE from "../conf/workerd/compatibilityDate.js";
 import { COMPATIBILITY_DATE as FLAG_COMPATIBILITY_DATE } from "../src/const/WORKER/FLAG.js";
 import u64Bin from "@3-/intbin/u64Bin.js";
+import ERR from "@3-/log/ERR.js";
 
-const srv_id = 1,
-  rand = Math.floor(Math.random() * 1e6),
-  TXT = "Hello from dynamic worker! " + rand,
-  host_key = R_HOST(HOST),
-  key = R_JS(srv_id, String(rand)),
-  code = "export default {\n  async fetch(req) {\n return new Response('" + TXT + "');\n  }\n};",
-  val = pack([code, [FLAG_COMPATIBILITY_DATE, COMPATIBILITY_DATE]]),
-  sh = join(SRV, "sh/workerd.sh");
+const UUID = randomUUID(),
+  TXT = "Hello from dynamic worker! " + UUID,
+  HOST_KEY = R_HOST("127.0.0.1"),
+  CODE = "export default {\n  async fetch(req) {\n return new Response('" + TXT + "');\n  }\n};",
+  VAL = pack([CODE, [FLAG_COMPATIBILITY_DATE, COMPATIBILITY_DATE]]),
+  SH = join(SRV, "sh/workerd.sh");
 
-let child;
+let child, SRV_ID, KEY;
 
 beforeAll(async () => {
+  SRV_ID = await R.incr(R_SRV_ID_INCR);
+  KEY = R_JS(SRV_ID, UUID);
+
   await R.pipeline()
-    .set(host_key, Buffer.from(u64Bin(srv_id)))
-    .set(key, val)
+    .setex(HOST_KEY, 600, Buffer.from(u64Bin(SRV_ID)))
+    .setex(KEY, 600, VAL)
     .exec();
-  const open = await isPortReachable(PORT, { host: HOST });
+  const open = await isPortReachable(PORT, { host: "127.0.0.1" });
   if (!open) {
-    child = spawn(sh);
+    child = spawn(SH);
     child.on("error", () => {});
     let retries = 50;
-    while (retries-- > 0 && !(await isPortReachable(PORT, { host: HOST }))) {
+    while (retries-- > 0 && !(await isPortReachable(PORT, { host: "127.0.0.1" }))) {
       await new Promise((r) => setTimeout(r, 100));
     }
   }
 });
 
 test("测试请求 url 与加载", async () => {
-  const res = await fetch("http://" + HOST + ":" + PORT + "/" + rand);
+  const res = await fetch("http://127.0.0.1:" + PORT + "/" + UUID);
   if (res.status !== 200) {
-    console.error("Test failed, body:", await res.text());
+    ERR("Test failed, body:", await res.text());
   }
   expect(res.status).toBe(200);
   expect(await res.text()).toBe(TXT);
 });
 
 afterAll(async () => {
-  await R.pipeline().del(host_key).del(key).exec();
+  await R.pipeline().del(HOST_KEY).del(KEY).exec();
   await R.quit();
   if (child) {
     child.kill("SIGTERM");

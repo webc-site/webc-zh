@@ -2,22 +2,26 @@
 import yargs from "yargs/yargs";
 import ERR from "@3-/log/ERR.js";
 import R from "../../src/conn/R.js";
-import { R_SRV_NAME, R_SRV_ID_INCR } from "../../src/R.js";
+import srvNew from "../../api/srvNew.js";
+import { SRV_EXIST } from "../../api/ERR.js";
 
-const argv = yargs(process.argv.slice(2)).usage("Usage: $0 <name>").demandCommand(1).argv,
-  name = argv._[0],
+const argv = yargs(process.argv.slice(2)).usage("Usage: $0 <uid> <name>").demandCommand(2).argv,
+  uid = Number(argv._[0]),
+  name = argv._[1],
   main = async () => {
-    const exist = await R.get(R_SRV_NAME(name));
-    if (exist) {
-      ERR("创建服务失败", "服务名 " + name + " 已存在，ID: " + exist);
-      await R.quit();
+    try {
+      const id = await srvNew(R, uid, name);
+      console.log(id);
+    } catch (err) {
+      if (Array.isArray(err) && err[0] === SRV_EXIST) {
+        ERR("创建服务失败", "服务名 " + name + " 已存在，ID: " + err[1]);
+      } else {
+        ERR("创建服务失败", err.message || err);
+      }
       process.exit(1);
+    } finally {
+      await R.quit();
     }
-
-    const id = await R.incr(R_SRV_ID_INCR);
-    await R.set(R_SRV_NAME(name), id);
-    console.log(id);
-    await R.quit();
   };
 
 await main();
