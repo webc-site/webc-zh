@@ -1,4 +1,4 @@
-import { R_ID_SRV } from "./R.js";
+import { R_ID_SRV } from "./R/SRV.js";
 import { SRV_NOT_FOUND } from "./ERR.js";
 
 export default async (redis, srv_id) => {

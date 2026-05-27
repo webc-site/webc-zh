@@ -1,4 +1,4 @@
-import { R_USER_ORG } from "./R.js";
+import { R_USER_ORG } from "./R/ORG.js";
 import int from "@3-/int";
 
 export default async (redis, uid) => {

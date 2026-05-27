@@ -1,5 +1,5 @@
 import { R_JS } from "../src/R.js";
-import { R_SRV_JS_PATH } from "./R.js";
+import { R_SRV_JS_PATH } from "./R/SRV.js";
 import { pack } from "msgpackr";
 import { COMPATIBILITY_DATE as FLAG_COMPATIBILITY_DATE } from "../src/const/WORKER/FLAG.js";
 import COMPATIBILITY_DATE from "../conf/workerd/compatibilityDate.js";

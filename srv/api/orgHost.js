@@ -1,4 +1,5 @@
-import { R_ORG_HOST_ID, R_ID_HOST } from "./R.js";
+import { R_ORG_HOST_ID } from "./R/ORG.js";
+import { R_ID_HOST } from "./R/HOST.js";
 import int from "@3-/int";
 
 export default async (redis, org_id) => {

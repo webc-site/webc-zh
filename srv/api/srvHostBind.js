@@ -1,12 +1,7 @@
 import { R_HOST_SRV } from "../src/R.js";
-import {
-  R_SRV_NAME_ID,
-  R_ORG_HOST_ID,
-  R_SRV_HOST_ID,
-  R_HOST_ID,
-  R_ID_BY_HOST,
-  R_ID_HOST,
-} from "./R.js";
+import { R_SRV_NAME_ID, R_SRV_HOST_ID } from "./R/SRV.js";
+import { R_ORG_HOST_ID } from "./R/ORG.js";
+import { R_HOST_ID, R_ID_BY_HOST, R_ID_HOST } from "./R/HOST.js";
 import { SRV_NOT_FOUND } from "./ERR.js";
 import binU64 from "@3-/intbin/binU64.js";
 import sec from "@3-/time/sec.js";

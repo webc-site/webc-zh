@@ -1,4 +1,5 @@
-import { R_SRV_NAME_ID, R_SRV_HOST_ID, R_ID_HOST } from "./R.js";
+import { R_SRV_NAME_ID, R_SRV_HOST_ID } from "./R/SRV.js";
+import { R_ID_HOST } from "./R/HOST.js";
 import { SRV_NOT_FOUND } from "./ERR.js";
 import binU64 from "@3-/intbin/binU64.js";
 import int from "@3-/int";

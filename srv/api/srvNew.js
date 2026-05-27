@@ -1,5 +1,6 @@
 import { R_SRV_ID } from "../src/R.js";
-import { R_SRV_NAME_ID, R_SRV_ORG_ID, R_ID_SRV, R_ORG_SRV_ID } from "./R.js";
+import { R_SRV_NAME_ID, R_SRV_ORG_ID, R_ID_SRV } from "./R/SRV.js";
+import { R_ORG_SRV_ID } from "./R/ORG.js";
 import { SRV_EXIST } from "./ERR.js";
 import binU64 from "@3-/intbin/binU64.js";
 import u64Bin from "@3-/intbin/u64Bin.js";

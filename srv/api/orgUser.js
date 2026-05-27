@@ -1,4 +1,4 @@
-import { R_ORG_USER } from "./R.js";
+import { R_ORG_USER } from "./R/ORG.js";
 import binU64 from "@3-/intbin/binU64.js";
 
 export default async (redis, org_id) => {

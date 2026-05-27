@@ -10,6 +10,7 @@ import { PORT } from "../conf/workerd/CONF.js";
 import COMPATIBILITY_DATE from "../conf/workerd/compatibilityDate.js";
 import u64Bin from "@3-/intbin/u64Bin.js";
 import ERR from "@3-/log/ERR.js";
+import { ORG_EXIST, MAIL_EXIST } from "../api/ERR.js";
 import srvNew from "../api/srvNew.js";
 import srvName from "../api/srvName.js";
 import srvJsSet from "../api/srvJsSet.js";
@@ -17,16 +18,12 @@ import orgSrv from "../api/orgSrv.js";
 import orgUser from "../api/orgUser.js";
 import userOrg from "../api/userOrg.js";
 import orgUserAdd from "../api/orgUserAdd.js";
+import orgNew from "../api/orgNew.js";
+import userNewByMail from "../api/userNewByMail.js";
 import { OWNER } from "../api/const/ORG_USER_ROLE.js";
-import {
-  R_SRV_NAME_ID,
-  R_ID_SRV,
-  R_SRV_ORG_ID,
-  R_SRV_JS_PATH,
-  R_ORG_SRV_ID,
-  R_ORG_USER,
-  R_USER_ORG,
-} from "../api/R.js";
+import { R_SRV_NAME_ID, R_ID_SRV, R_SRV_ORG_ID, R_SRV_JS_PATH } from "../api/R/SRV.js";
+import { R_ORG_SRV_ID, R_ORG_USER, R_ID_BY_ORG, R_ORG, R_USER_ORG } from "../api/R/ORG.js";
+import { R_USER_NAME, R_USER_MAIL, R_ID_BY_MAIL } from "../api/R/USER.js";
 
 const UUID = randomUUID(),
   TXT = "Hello from dynamic worker! " + UUID,
@@ -108,6 +105,48 @@ test("测试组织与成员角色关系以及用户所属组织列表", async ()
 
   // 清理
   await R.pipeline().del(R_ORG_USER(org_id)).del(R_USER_ORG(uid)).exec();
+});
+
+test("测试创建组织及重名拦截", async () => {
+  const org_name = "test-org-" + UUID,
+    uid = 6666;
+
+  // 创建新组织
+  const org_id = await orgNew(R, uid, org_name);
+  expect(org_id).toBeGreaterThan(0);
+
+  // 验证用户被正确绑定为 OWNER
+  const users = await orgUser(R, org_id);
+  expect(users).toContainEqual([uid, OWNER]);
+
+  const orgs = await userOrg(R, uid);
+  expect(orgs).toContain(org_id);
+
+  // 验证重名拦截
+  await expect(orgNew(R, uid, org_name)).rejects.toEqual([ORG_EXIST, org_id]);
+
+  // 清理
+  await R.pipeline()
+    .del(R_ID_BY_ORG(org_name))
+    .del(R_ORG(org_id))
+    .del(R_ORG_USER(org_id))
+    .del(R_USER_ORG(uid))
+    .exec();
+});
+
+test("测试根据邮箱创建用户及邮箱重名拦截", async () => {
+  const username = "test-user-" + UUID,
+    email = UUID + "@example.com";
+
+  // 创建新用户
+  const uid = await userNewByMail(R, username, email);
+  expect(uid).toBeGreaterThan(0);
+
+  // 验证重名拦截
+  await expect(userNewByMail(R, username, email)).rejects.toEqual([MAIL_EXIST, uid]);
+
+  // 清理
+  await R.pipeline().del(R_ID_BY_MAIL(email)).del(R_USER_NAME(uid)).del(R_USER_MAIL(uid)).exec();
 });
 
 afterAll(async () => {
