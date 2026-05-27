@@ -1,0 +1,69 @@
+.Btn, .BtnC
+  align-items center
+  background-color transparent
+  background-repeat no-repeat
+  border none
+  border-radius var(--btnRadius)
+  box-shadow var(--btnShadow)
+  box-sizing border-box
+  color var(--btnColor)
+  cursor pointer
+  display flex
+  font-family inherit
+  font-variation-settings 'wght' 300
+  font-weight 300
+  justify-content center
+  text-decoration none
+  transition var(--btnTransition)
+  user-select none
+  white-space nowrap
+
+  &::before
+    background var(--btnBg)
+
+  &:hover
+    box-shadow var(--btnShadowHov)
+    color var(--btnColorHov)
+    filter brightness(1.1)
+    transform scale(1.02)
+
+    &::before
+      background var(--btnBgHov)
+
+  &:active
+    box-shadow var(--btnShadowAct)
+    transform var(--btnTransformAct)
+    transition var(--btnTransitionAct)
+
+    &::before
+      background var(--btnBgAct)
+
+.Btn
+  padding var(--btnPadding)
+
+.BtnC
+  height var(--btnCSize)
+  padding 0
+  width var(--btnCSize)
+
+  .Ico
+    background-image var(--btnIco)
+    background-position center
+    background-repeat no-repeat
+    background-size 24px
+    display block
+    height 100%
+    width 100%
+
+.Btn.Main
+  --btnBg linear-gradient(135deg, #0047ccd9, #0071e3d9)
+  --btnBgAct linear-gradient(135deg, #003da6cc, #005bb5cc)
+  --btnBgHov linear-gradient(135deg, #0055ffe6, #0088ffe6)
+  --btnColor #ffffff
+  --btnColorHov #ffffff
+  --btnShadow inset 0 1px 1.5px rgba(255, 255, 255, 0.65), inset 0 0 0 1px rgba(0, 71, 204, 0.45)
+  --btnShadowAct inset 0 1px 0 rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(0, 71, 204, 0.35)
+  --btnShadowHov inset 0 1.5px 2px rgba(255, 255, 255, 0.85), inset 0 0 0 1px rgba(0, 71, 204, 0.6)
+  --btnTransformAct scale(0.975) translateY(0)
+  --btnTransition all 0.4s cubic-bezier(0.15, 1, 0.3, 1)
+  --btnTransitionAct 0.1s

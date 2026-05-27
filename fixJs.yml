@@ -1,0 +1,11 @@
+- regex: 'readFileSync.*([''"`])utf-?8\1'
+  prompt: |
+    请用工具修改此文件：
+    1. 引入 `@3-/read` 库。
+    2. 将 `readFileSync(path, 'utf8')` 替换为 `read(path)`。
+
+- regex: '\btypeof\b\s*\(?[^=)]+\)?\s*=={1,2}\s*([''"`])string\1'
+  prompt: |
+    请用工具修改此文件：
+    1. import isStr from "@3-/is_str"
+    2. 将 `typeof xxx =="string"`替换为 `isStr(xxx)`。
