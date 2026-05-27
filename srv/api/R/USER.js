@@ -12,4 +12,8 @@ export const R_USER_NAME = key("userName:", (uid) => u64Bin(uid)),
   string
   userId 自增用户ID计数器 (数值)
   */
-  R_USER_ID = "userId";
+  R_USER_ID = "userId",
+  /*
+  生成唯一的用户ID (奇数)
+  */
+  userId = (redis) => redis.incrby(R_USER_ID, 2);

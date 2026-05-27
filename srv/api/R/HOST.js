@@ -8,7 +8,7 @@ hostId:[域名] → 域名ID (数值)
 */
 export const R_ID_BY_HOST = (host) => "hostId:" + host,
   /*
-  Mini-ID反查域名
+  ID反查域名
   用于根据域名ID查找域名
   string
   idHost:[域名ID] → 域名 (字符串)

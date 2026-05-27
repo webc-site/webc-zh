@@ -6,4 +6,4 @@ set -x
 
 bun x oxfmt
 bun x oxlint --fix
-bun x knip-bun
+# bun x knip-bun

@@ -1,11 +1,12 @@
 import { expect, test, afterAll } from "vitest";
 import R from "../lib/R.js";
-import { R_SRV_JS_PATH } from "../api/R/SRV.js";
+import init from "../api/init.js";
 
 test("Redis 连接测试", async () => {
-  const result = await R.ping();
-  expect(result).toBe("PONG");
-  expect(R_SRV_JS_PATH(1)).toBeDefined();
+  const pingRes = await R.ping();
+  expect(pingRes).toBe("PONG");
+
+  await init();
 });
 
 afterAll(async () => {
