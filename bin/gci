@@ -1,0 +1,13 @@
+#!/usr/bin/env bun
+
+import { $, cd } from 'zx';
+import gci from '~/ai/lib/gci.js';
+import svelteSvg from '~/ai/svelteSvg.js';
+
+cd(import.meta.dirname)
+
+$.verbose = true;
+
+await './sh/hook/fmt.sh'
+await svelteSvg();
+await gci();

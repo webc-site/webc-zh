@@ -1,0 +1,66 @@
+.Confirm
+  border-radius 16px
+  box-sizing border-box
+  display flex
+  flex-direction column
+  gap 16px
+  max-width 480px
+  min-width 300px
+  padding 24px
+
+  > b:first-child
+    align-items flex-start
+    color #1d1d1f
+    display flex
+    flex-direction column
+    font-size 15px
+    gap 12px
+
+    h3
+      font-size 18px
+      font-weight 600
+      margin 0
+
+    p
+      color #666
+      font-size 14px
+      margin 0
+
+  > b:first-child.Wait + b:last-child
+    button:last-child
+      display none
+
+  > b:last-child
+    display flex
+    gap 16px
+    margin 12px 0 0
+    width 100%
+
+    button
+      flex 1
+
+      i
+        background-color currentColor
+        display inline-block
+        height 16px
+        margin-right 6px
+        mask-position 50% 50%
+        mask-repeat no-repeat
+        mask-size contain
+        width 16px
+
+      &:first-child i
+        mask-image var(--confirmXSvg)
+
+      &:last-child
+        --btnBg linear-gradient(180deg, #f0fdf4, #dcfce7)
+        --btnBgAct linear-gradient(180deg, #052e16, #022c22)
+        --btnBgHov linear-gradient(180deg, #14532d, #052e16)
+        --btnColor #15803d
+        --btnColorHov #ffffff
+        --btnShadow inset 0 1px 1px #ffffff, inset 0 0 0 1px #bbf7d0, 0 1px 2px #00000005
+        --btnShadowAct inset 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 0 0 1px #022c22
+        --btnShadowHov inset 0 1.5px 0 rgba(255, 255, 255, 0.25), inset 0 -4px 8px rgba(2, 44, 34, 0.6), inset 0 0 0 1px #022c22
+
+        i
+          mask-image var(--confirmOkSvg)

@@ -1,0 +1,5 @@
+ignore:
+  - cli/
+  - com/
+  - lib/
+  - srv/
