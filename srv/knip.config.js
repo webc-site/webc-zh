@@ -1,7 +1,7 @@
 export default {
-  entry: ["lib/main.js", "sh/*.js", "test/*.js", "docker/*.js"],
+  entry: ["src/main.js", "sh/**/*.js", "test/*.js", "docker/*.js"],
   project: ["**/*.js"],
   ignoreDependencies: ["nodemon"],
-  ignoreFiles: ["conf/R.js"],
+  ignoreFiles: ["conf/*.js", "conf/**/*.js"],
   ignoreBinaries: ["mise", "down", "up"],
 };

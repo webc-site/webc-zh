@@ -2,7 +2,7 @@
 
 import { dirname, join } from "node:path";
 import read from "@3-/read";
-import { globby } from "globby";
+import gitLs from "~/sh/lib/gitLs.js";
 import { $ } from "@3-/zx";
 import ROOT from "~/vite/const/ROOT.js";
 import pkgMerge from "~/cli/src/pkgMerge.js";
@@ -10,10 +10,7 @@ import pkgMerge from "~/cli/src/pkgMerge.js";
 $.verbose = 1;
 
 const init = async () => {
-  const files = await globby("**/package.json", {
-      cwd: ROOT,
-      ignore: ["**/node_modules/**", "**/dist/**", "package.json", "srv/workerd/**"],
-    }),
+  const files = await gitLs("**/package.json", ROOT),
     com_packages = [],
     other_dirs = [];
 

@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { builtinModules } from "node:module";
 import SRV from "./const/SRV.js";
 
-const input = join(SRV, "lib/main.js"),
+const input = join(SRV, "src/main.js"),
   output = join(SRV, "dist/main.js"),
   ext = builtinModules.filter((b) => !b.startsWith("_")).flatMap((b) => [b, "node:" + b]);
 

@@ -5,9 +5,9 @@ const config :Workerd.Config = (
     ( name = "main",
       worker = (
         modules = [
-          (name = "main", esModule = embed "../dist/main.js")
+          (name = "main", esModule = embed "<%= it.main %>")
         ],
-        compatibilityDate = "2026-05-26",
+        compatibilityDate = "<%= it.compatibilityDate %>",
         compatibilityFlags = ["nodejs_compat", "experimental"],
         bindings = [
           (name = "loader", workerLoader = ()),
@@ -19,7 +19,7 @@ const config :Workerd.Config = (
   ],
   sockets = [
     ( name = "http",
-      address = "*:9050",
+      address = "*:<%= it.PORT %>",
       http = (),
       service = (name = "main")
     )

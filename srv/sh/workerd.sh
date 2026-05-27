@@ -11,10 +11,10 @@ if [ ! -d "node_modules" ]; then
   bun i
 fi
 
-if [ ! -f "$BIN_PATH" ]; then
-  ./sh/init.js
+if [ ! -f "$BIN_PATH" ] || [ ! -f "$DIR/gen/srv.capnp" ]; then
+  bun --insecure "$DIR/init.js"
 fi
 
+ulimit -n 10240 2>/dev/null || ulimit -n 4096 2>/dev/null || true
 set -x
-
-exec "$BIN_PATH" serve --experimental conf/workerd.capnp
+exec "$BIN_PATH" serve --experimental "$DIR/gen/srv.capnp"

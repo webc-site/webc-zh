@@ -1,6 +1,6 @@
 import { platform as osPlatform, arch as osArch } from "node:os";
 import { join } from "node:path";
-import SRV from "../const/SRV.js";
+import SRV from "../../const/SRV.js";
 
 const platform = osPlatform(),
   arch = osArch(),
