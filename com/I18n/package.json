@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@3-/lang": "^0.2.15"
+  }
+}

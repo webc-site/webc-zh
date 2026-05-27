@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <component_dir>"
+  echo "Example: $0 ./com/Wait"
+  exit 1
+fi
+
+set -e
+DIR=$(realpath $0) && DIR=${DIR%/*}
+cd $DIR
+. pid.sh
+PORT=5182
+(
+  for i in {1..30}; do
+    if nc -z 127.0.0.1 $PORT; then
+      open "http://127.0.0.1:$PORT/"
+      break
+    fi
+    sleep 0.1
+  done
+) &
+
+cd ..
+set -x
+exec ./vite/com/dev.js $@ --port $PORT
