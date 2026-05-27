@@ -6,8 +6,8 @@ import NAME from "@3-/lang/NAME.js";
 
 LANG_LI.splice(0, LANG_LI.length, ...NAME.map((name, id) => [name, id]));
 
-let container = null;
-let lang_idx = $state(1);
+let container,
+  lang_idx = $state(1);
 
 onMount(() => {
   const btn = I18n();

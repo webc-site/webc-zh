@@ -24,18 +24,20 @@ export default () => {
     main.className = "I18n" + LG;
     title.innerText = "请选择页面语言";
 
-    for (const [name, id] of LANG_LI) {
-      const button = newEl("button");
-      button.innerText = name;
-      button.className = cur_lang == id ? BTN_LG + " Main" : BTN_LG;
-      On(button, {
-        click: () => {
-          langSet(id);
-          dialog.close();
-        },
-      });
-      btn_container.append(button);
-    }
+    btn_container.append(
+      ...LANG_LI.map(([name, id]) => {
+        const button = newEl("button");
+        button.innerText = name;
+        button.className = cur_lang == id ? BTN_LG + " Main" : BTN_LG;
+        On(button, {
+          click: () => {
+            langSet(id);
+            dialog.close();
+          },
+        });
+        return button;
+      }),
+    );
     main.append(title, btn_container);
     dialog.append(main);
   };
