@@ -1,5 +1,5 @@
-import R from "./conn/R.js";
-import { R_JS, R_HOST } from "./R.js";
+import R from "../lib/R.js";
+import { R_JS, R_HOST_SRV } from "./R.js";
 import { unpack } from "msgpackr";
 import binU64 from "@3-/intbin/binU64.js";
 import { COMPATIBILITY_DATE as FLAG_COMPATIBILITY_DATE } from "./const/WORKER/FLAG.js";
@@ -12,7 +12,7 @@ const I_JS = "i.js";
 export default async (req, env, ctx) => {
   const { pathname, hostname } = new URL(req.url),
     path = pathname.slice(1),
-    srv_id_buf = await R.getBuffer(R_HOST(hostname));
+    srv_id_buf = await R.getBuffer(R_HOST_SRV(hostname));
   if (!srv_id_buf) {
     throw NO_HOST;
   }

@@ -1,16 +1,16 @@
 #!/usr/bin/env bun
 import yargs from "yargs/yargs";
 import ERR from "@3-/log/ERR.js";
-import R from "../../src/conn/R.js";
+import R from "../../lib/R.js";
 import srvNew from "../../api/srvNew.js";
 import { SRV_EXIST } from "../../api/ERR.js";
 
-const argv = yargs(process.argv.slice(2)).usage("Usage: $0 <uid> <name>").demandCommand(2).argv,
-  uid = Number(argv._[0]),
+const argv = yargs(process.argv.slice(2)).usage("Usage: $0 <org_id> <name>").demandCommand(2).argv,
+  org_id = Number(argv._[0]),
   name = argv._[1],
   main = async () => {
     try {
-      const id = await srvNew(R, uid, name);
+      const id = await srvNew(R, org_id, name);
       console.log(id);
     } catch (err) {
       if (Array.isArray(err) && err[0] === SRV_EXIST) {
