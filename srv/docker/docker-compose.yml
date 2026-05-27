@@ -34,6 +34,8 @@ services:
       - ${PASSWORD}
       - --port
       - ${PORT}
+      - --lua-strict-key-accessing
+      - "yes"
     volumes:
       - ./data/kvrocks:/data
       - ./conf/kvrocks:/var/lib/kvrocks
