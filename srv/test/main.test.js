@@ -23,7 +23,9 @@ import userNewByMail from "../api/userNewByMail.js";
 import { OWNER } from "../api/const/ORG_USER_ROLE.js";
 import { R_SRV_NAME_ID, R_ID_SRV, R_SRV_ORG_ID, R_SRV_JS_PATH } from "../api/R/SRV.js";
 import { R_ORG_SRV_ID, R_ORG_USER, R_ID_BY_ORG, R_ORG, R_USER_ORG } from "../api/R/ORG.js";
-import { R_USER_NAME, R_USER_MAIL, R_ID_BY_MAIL } from "../api/R/USER.js";
+import { R_USER_NAME } from "../api/R/USER.js";
+import { R_USER_MAIL, R_ID_BY_MAIL } from "../api/R/MAIL.js";
+import { R_ID_BY_HOST, R_ID_HOST } from "../api/R/HOST.js";
 
 const UUID = randomUUID(),
   TXT = "Hello from dynamic worker! " + UUID,
@@ -136,7 +138,10 @@ test("测试创建组织及重名拦截", async () => {
 
 test("测试根据邮箱创建用户及邮箱重名拦截", async () => {
   const username = "test-user-" + UUID,
-    email = UUID + "@example.com";
+    email = UUID + "@example.com",
+    at = email.lastIndexOf("@"),
+    prefix = email.slice(0, at),
+    host = email.slice(at + 1);
 
   // 创建新用户
   const uid = await userNewByMail(R, username, email);
@@ -145,8 +150,16 @@ test("测试根据邮箱创建用户及邮箱重名拦截", async () => {
   // 验证重名拦截
   await expect(userNewByMail(R, username, email)).rejects.toEqual([MAIL_EXIST, uid]);
 
+  const host_id = await R.get(R_ID_BY_HOST(host));
+
   // 清理
-  await R.pipeline().del(R_ID_BY_MAIL(email)).del(R_USER_NAME(uid)).del(R_USER_MAIL(uid)).exec();
+  await R.pipeline()
+    .del(R_ID_BY_MAIL(host_id, prefix))
+    .del(R_USER_NAME(uid))
+    .del(R_USER_MAIL(uid))
+    .del(R_ID_BY_HOST(host))
+    .del(R_ID_HOST(host_id))
+    .exec();
 });
 
 afterAll(async () => {
