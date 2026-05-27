@@ -36,6 +36,8 @@ services:
       - ${PORT}
       - --lua-strict-key-accessing
       - "yes"
+      - --redis-cursor-compatible
+      - "yes"
     volumes:
       - ./data/kvrocks:/data
       - ./conf/kvrocks:/var/lib/kvrocks
