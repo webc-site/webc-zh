@@ -1,0 +1,12 @@
+*.png
+
+node_modules/
+/conf/
+/gen/
+/font/
+/dist/
+/lib/
+*.log
+*.tar.bz2
+bun.lock
+/.tmp/

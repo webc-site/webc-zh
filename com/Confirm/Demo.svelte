@@ -1,0 +1,69 @@
+<script>
+import Confirm from "./Confirm.js";
+import { newEl } from "x/dom.js";
+
+const showRichConfirm = () => {
+    Confirm((el) => {
+      const h3 = newEl("h3"),
+        p = newEl("p");
+      h3.textContent = "危险操作";
+      p.textContent = "此操作不可逆，请确认您已备份数据。";
+      el.append(h3, p);
+    });
+  },
+  showAsyncConfirm = () => {
+    Confirm(
+      (el) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const h3 = newEl("h3");
+            h3.textContent = "异步渲染完成";
+            el.append(h3);
+            resolve();
+          }, 1500);
+        });
+      },
+      () => {
+        return new Promise((resolve) => {
+          setTimeout(resolve, 1000);
+        });
+      },
+    );
+  };
+</script>
+
+<template lang="pug">
+section
+  header 弹出层演示
+  b.btn-group
+    button.Btn.Lg(onclick!={ showRichConfirm }) 渲染函数
+    button.Btn.Lg(onclick!={ showAsyncConfirm }) 异步等待
+</template>
+
+<style lang="stylus">
+:global
+  @import './var.styl'
+  @import './Confirm.styl'
+
+section
+  display flex
+  flex-direction column
+  gap 20px
+  width 100%
+  max-width 600px
+  margin 40px auto
+  padding 32px
+  box-sizing border-box
+
+header
+  font-size 18px
+  font-weight 600
+  color #1d1d1f
+  text-align center
+
+.btn-group
+  display flex
+  gap 16px
+  justify-content center
+  flex-wrap wrap
+</style>
