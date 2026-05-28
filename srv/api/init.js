@@ -27,7 +27,6 @@ const LIB_LUA = "lib.lua",
   main = async () => {
     // 用户ID用奇数，组织ID用偶数
     await R.pipeline().setnx(R_USER_ID, 100001).setnx(R_ORG_ID, 100000).exec();
-
     await luaLoad(import.meta.dirname);
   };
 
