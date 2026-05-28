@@ -1,5 +1,6 @@
 *.png
 
+.codegraph/
 node_modules/
 /conf/
 /gen/
