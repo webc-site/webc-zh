@@ -7,6 +7,7 @@ import { R_USER_ID } from "./R/USER.js";
 import { R_ORG_ID } from "./R/ORG.js";
 
 const LIB_LUA = "lib.lua",
+  ROOT = import.meta.dirname,
   luaLoad = async (dir) => {
     const rDir = join(dir, "R"),
       luaFiles = readdirSync(rDir).filter((file) => file.endsWith(".lua"));
@@ -27,7 +28,7 @@ const LIB_LUA = "lib.lua",
   main = async () => {
     // 用户ID用奇数，组织ID用偶数
     await R.pipeline().setnx(R_USER_ID, 100001).setnx(R_ORG_ID, 100000).exec();
-    await luaLoad(import.meta.dirname);
+    await luaLoad(ROOT);
   };
 
 export default main;
