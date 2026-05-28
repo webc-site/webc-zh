@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { basename, join } from "node:path";
 import { readdirSync } from "node:fs";
 import read from "@3-/read";
@@ -18,9 +19,15 @@ export const luaLoad = async (dir) => {
   }
 };
 
-export default async () => {
+const main = async () => {
   // 用户ID用奇数，组织ID用偶数
   await R.pipeline().setnx(R_USER_ID, 100001).setnx(R_ORG_ID, 100000).exec();
 
   await luaLoad(import.meta.dirname);
 };
+
+export default main;
+
+if (import.meta.main) {
+  await main();
+}

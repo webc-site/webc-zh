@@ -18,7 +18,7 @@ export const R_ORG_ID = "orgId",
   */
   R_ORG_SRV_ID = key("orgSrv:", (org_id) => u64Bin(org_id)),
   /*
-  用于查询组织绑定的全部域名
+  用于查询组织绑定的全部域名（仅代表域名所有权归属，该域名可被其他组织的服务绑定）
   zset
   orgHost:[组织ID] [最后修改时间戳(秒)] → [域名ID] (数值)
   */

@@ -21,6 +21,12 @@ export const R_USER_MAIL = key("user{mail}:", (uid) => u64Bin(uid)),
   */
   R_ID_MAIL = key("id{mail}:", (mail_id) => u64Bin(mail_id)),
   /*
+  用于根据邮箱ID查找用户ID
+  string
+  mailIdUser{mail}:[邮箱ID] → 用户ID (u64Bin)
+  */
+  R_USER_ID_BY_MAIL_ID = key("{mail}IdUser:", (mail_id) => u64Bin(mail_id)),
+  /*
   用于生成唯一的邮箱ID
   string
   {mail}Id 自增邮箱ID计数器 (数值)
@@ -30,8 +36,14 @@ export const R_USER_MAIL = key("user{mail}:", (uid) => u64Bin(uid)),
   调用 redis function 获取或创建邮箱ID
   */
   mailId = async (redis, prefix, host) => {
-    const r = await redis.fcallBuffer("mailId", 0, prefix, host);
-    return r ? binU64(r) : r;
+    const key_mail = R_ID_BY_MAIL(host, prefix),
+      r = await redis.fcallBuffer("mailId", 2, key_mail, R_MAIL_ID, prefix, host);
+    if (r) {
+      const id = binU64(r);
+      await redis.set(R_ID_MAIL(id), prefix + "@" + host);
+      return id;
+    }
+    return r;
   },
   /*
   通过id获取mail

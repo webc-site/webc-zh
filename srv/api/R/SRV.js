@@ -20,7 +20,7 @@ export const R_SRV_NAME_ID = (name) => "srv:" + name,
   */
   R_SRV_ORG_ID = key("srvOrg:", (srv_id) => u64Bin(srv_id)),
   /*
-  用于查询服务绑定的全部域名
+  用于查询服务绑定的全部域名（服务可跨组织绑定域名，即绑定的域名ID可属于其他组织）
   zset
   srvHost:[服务ID] [最后修改时间戳(秒)] → [域名ID] (数值)
   */

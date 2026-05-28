@@ -20,18 +20,16 @@ local function incr(k)
 end
 
 redis.register_function('mailId', function(keys, args)
-  local prefix = args[1]
-  local host = args[2]
-  local key_mail = "{mail}:" .. host .. ":" .. prefix
+  local key_mail = keys[1]
+  local key_mail_id = keys[2]
   local bin_id = get(key_mail)
   if bin_id then
     return bin_id
   end
-  local id = incr('{mail}Id')
+  local id = incr(key_mail_id)
   
   bin_id = u64Bin(id)
   
   set(key_mail, bin_id)
-  set('id{mail}:' .. bin_id, prefix .. '@' .. host)
   return bin_id
 end)
