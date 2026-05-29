@@ -1,6 +1,6 @@
 # 优化加载性能
 
-https://www.npmjs.com/package/@3-/lru#zh
+https://www.npmjs.com/package/@3-/lru
 
 把请求 url 的代码、wasm 缓存到进程内
 订阅 publish 接受更新
